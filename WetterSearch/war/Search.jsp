@@ -5,6 +5,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Google Search</title>
+<!-- Put the following javascript before the closing </head> tag. -->
 <script>
   (function() {
     var cx = '010235793329395389058:8j2oz6hhiwe';
