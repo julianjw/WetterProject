@@ -17,7 +17,7 @@
 </script>
 </head>
 <body>
-<div id="google" align="left" style="width: 400px; float: left;">
+<div id="google" align="left" style="width: 800px; float: left;">
 	<gcse:search></gcse:search>
 </div>
 
