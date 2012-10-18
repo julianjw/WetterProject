@@ -17,7 +17,14 @@
 </script>
 </head>
 <body>
+<div id="google" align="left" style="width: 400px; float: left;">
+	<gcse:search></gcse:search>
+</div>
+
+<div id="twitter" align="right" style="width: 400px; float: right;">
+	Hello this is the twitter div.
+</div>
 <!-- Place this tag where you want both of the search box and the search results to render -->
-<gcse:search></gcse:search>
+
 </body>
 </html>
