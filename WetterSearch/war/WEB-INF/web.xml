@@ -9,7 +9,7 @@
  	</servlet>
 	<servlet-mapping>
 		<servlet-name>WetterSearch</servlet-name>
-		<url-pattern>/wettersearch</url-pattern>
+		<url-pattern>/WetterSearch</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>TwitterSearch</servlet-name>
