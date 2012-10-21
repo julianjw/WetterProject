@@ -16,6 +16,57 @@ public class TwitterResults {
     		
     public String GetText() {return text;}
     
+    public String GetLinkedText() {
+    	
+    	String linkedText = text;
+    	
+/*    	int startIndex = 0;
+    	int endIndex = 0;
+    	
+    	String httpString = "http://t.co";
+    	String httpStringLinked = "<a href=" + '"' + "http://t.co";
+    	
+    	startIndex = text.indexOf(httpString);
+    	
+    	boolean hasLink = text.contains(httpString);*/
+    	String httpStringLinked = "";
+    	
+    	if (this.url != null) {
+    		String link = this.url;
+    		
+    		httpStringLinked = "<a href=" + '"' + link + '"' + "/>";
+    	
+    		//linkedText.replace(link, httpStringLinked);
+    		
+    		linkedText.replaceAll(link, httpStringLinked);
+    		
+    	}
+    	
+    	
+    	
+    	
+/*    	for (int i=0; i<text.length(); i++) {
+    		
+    		char tempChar = text.charAt(i);
+    		
+    		
+    		
+    		if (tempChar == 'h') {
+    			startIndex = i;
+    			
+    			
+    			CharSequence s = {'h', 't', 't', 'p', ':', '/', '/', 't', '.', 'c', 'o'};
+				text.contains(s);
+				
+				
+    		}
+    		
+    	}*/
+    	
+    	
+    	return linkedText;
+    }
+    
     public String GetUserName() {return from_user_name;}
     
     public String GetCreatedAt() {return created_at;}
@@ -41,10 +92,9 @@ public class TwitterResults {
 		
     	for (int i=0; i<text.length(); i++ ) {
     		char tempChar = text.charAt(i);
-    		if (tempChar == '?') {
-    			break;
+    		if (tempChar != '?') {
+    			tempString += tempChar;
     		}
-    		tempString += tempChar;
     	}
 		
 		this.from_user_name = tempString;

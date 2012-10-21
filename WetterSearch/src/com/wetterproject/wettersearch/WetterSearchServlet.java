@@ -20,62 +20,24 @@ import com.google.appengine.labs.repackaged.org.json.JSONObject;
 public class WetterSearchServlet extends HttpServlet {
 	
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
-			throws IOException {
+			throws IOException, ServletException {
+		
 		resp.setContentType("text/plain");
-		resp.getWriter().println("Hello, world");
 		
-	}
-	
-	//Roland Illig (Stack Overflow)
-	private static String readAll(Reader rd) throws IOException {
-	    StringBuilder sb = new StringBuilder();
-	    int cp;
-	    while ((cp = rd.read()) != -1) {
-	    	sb.append((char) cp);
-	    }
-	    return sb.toString();
-  	}
-  
-	//Roland Illig (Stack Overflow)
-	public static JSONObject readJsonFromUrl(String url) throws IOException, JSONException {
-	    InputStream is = new URL(url).openStream();
-	    try {
-	    	BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
-	      	String jsonText = readAll(rd);
-	      	JSONObject json = new JSONObject(jsonText);
-	      	return json;
-	    } finally {
-	    	is.close();
-	    }
-	}
-	
-	public static String convertResultsToHTML(ArrayList<TwitterResults> results) {
-		
-		//String htmlText = "";
-		
-		String htmlText = "<table>";
-		
-		for (int k = 0; k < results.size(); k++) {
-		
-			
-			htmlText +="<TR>"
-					 	+ "<TD>" + results.get(k).GetText() + "</TD>"
-					 	+ "<TD>" + results.get(k).GetUserName() + "</TD>"
-					 	+ "<TD>" + "<img src=" + '"' + results.get(k).getProfile_image_url() + '"' + "></TD>"
-					 	+ "<TD>" + results.get(k).GetCreatedAt() + "</TD>"
-					 	+ "</TR>";
-			}
-			htmlText += "</table>";
-		
-		
-		return htmlText;
-	}
-	
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-    	
-		resp.setContentType("text/plain");
-
 		String query = req.getParameter("q");
+		String tempString = "";
+		
+		for (int z=0; z<query.length(); z++) {
+			char tempChar = query.charAt(z);
+			
+			if (tempChar == ' ') {
+				tempString += "%20";
+			} else {
+				tempString += tempChar;
+			}
+		}
+		
+		query = tempString;
 		
 		//Create url from the query given
 		String jsonFile = "http://search.twitter.com/search.json?q=" + query + "%20filter:links" + "&lang=en&iso_language_code=en&include_entities=true&result_type=mixed";
@@ -85,7 +47,6 @@ public class WetterSearchServlet extends HttpServlet {
 		
 		try {
 			json = readJsonFromUrl(jsonFile);
-			System.out.println(json.toString());
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -134,33 +95,11 @@ public class WetterSearchServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 		
-		//Display some results (for testing only)
-		for (int j=0; j<results.size(); j++) {
-			System.out.println(results.get(j).GetText());
-			System.out.println(results.get(j).GetUserName());
-			System.out.println(results.get(j).GetCreatedAt());
-		}
-		
 		//Sort results into most relevant (the links that are most referred to)
 		
 		
 		//Display results
-		
-		
-		
-		
-		//Redirect the stuff back to same page to display data
-		//req.setAttribute("dailyGeneration", dailyGenerationArray);
-		//req.setAttribute("monthlyGeneration", monthlyGenerationArray);
-		//req.setAttribute("yearlyGeneration", yearlyGenerationArray);
-		//req.setAttribute("saving", saving);
-		
-		//Put the inputs back into the input boxes
-		//req.setAttribute("inputSystemSize", req.getParameter("inputSystemSize"));
-		//req.setAttribute("inputTariff", req.getParameter("inputTariff"));
-		//req.setAttribute("inputHoursSunlight", req.getParameter("inputHoursSunlight"));
-		//req.setAttribute("inputHouseholdUsage", req.getParameter("inputHouseholdUsage"));
-		
+	
 		String resultsHTML = convertResultsToHTML(results);
 		
 		req.setAttribute("twitterFeed", resultsHTML);
@@ -168,5 +107,50 @@ public class WetterSearchServlet extends HttpServlet {
 		//response.sendRedirect("/SearchResults.jsp"); redirect to another page
 		
 		req.getRequestDispatcher("/Search.jsp").forward(req, resp);
-    }
+		
+	}
+	
+	//Roland Illig (Stack Overflow)
+	private static String readAll(Reader rd) throws IOException {
+	    StringBuilder sb = new StringBuilder();
+	    int cp;
+	    while ((cp = rd.read()) != -1) {
+	    	sb.append((char) cp);
+	    }
+	    return sb.toString();
+  	}
+  
+	//Roland Illig (Stack Overflow)
+	public static JSONObject readJsonFromUrl(String url) throws IOException, JSONException {
+	    InputStream is = new URL(url).openStream();
+	    try {
+	    	BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
+	      	String jsonText = readAll(rd);
+	      	JSONObject json = new JSONObject(jsonText);
+	      	return json;
+	    } finally {
+	    	is.close();
+	    }
+	}
+	
+	public static String convertResultsToHTML(ArrayList<TwitterResults> results) {
+		
+		String htmlText = "<table border=" + '"' + "1" + '"' + " cellpadding=" + '"' + "5" + '"' + ">";
+		
+		for (int k = 0; k < results.size(); k++) {
+		
+			
+			htmlText +="<TR>"
+					 	+ "<TD>" + "<img src=" + '"' + results.get(k).getProfile_image_url() + '"' + ">"
+					 	+ results.get(k).GetUserName() + "</TD>"
+					 	+ "<TD>" + results.get(k).GetLinkedText() + "</TD>"
+					 	+ "<TD>" + results.get(k).GetCreatedAt() + "</TD>"
+					 	+ "</TR>";
+			}
+			htmlText += "</table>";
+		
+		
+		return htmlText;
+	}
+	
 }
