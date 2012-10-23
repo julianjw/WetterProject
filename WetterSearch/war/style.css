@@ -5,11 +5,17 @@ body {
 	max-height: 1200px;
 }
 .wrapper {
-	width: 1250px;
+	max-width: 1250px;
 	margin: 0 auto;
 	padding: 5px;
-	background-color: #FFFFFF;
-	max-height: 1260px;
+	background-color: #FFFFCC;
+	min-height: 1260px;
+}
+.wrapper2 {
+	max-width: 1250px;
+	margin: 0 auto;
+	padding: 5px;
+	background-color: #FFFFCC;
 }
 #masthead {
 	margin: 0;
@@ -86,13 +92,16 @@ table.table {
 table.table td {	
 	border:2px solid #800000;
 	border-color:#008000;
-	border-collapse:collapse;			
+	border-collapse:collapse;
+	max-height: 48px;			
 }
 table.table a{
 	color: #008000;
 }
 .footer {
 	text-align:center;
+	align: center;
+	padding-left: 225px;
 	width: 800px;
 	margin-top: 5px;
 	margin-bottom: 5px;
@@ -137,3 +146,7 @@ table.table a{
 height:450px;
 }
 .gsc-branding-text, .gsc-branding-img { display: none; height: 0; }
+.img {
+	max-height: 48px;
+	max-width: 48px;
+}

@@ -9,19 +9,48 @@
 <html>
   <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <title>Hello App Engine</title> 
+    <title>Welcome to Wetter Search</title> 
+    <link type="text/css" rel="stylesheet" href="/style.css" />
   </head>
 
   <body>
-    <h1>Hello App Engine!</h1>
-	
-    <table>
-      <tr>
-        <td colspan="2" style="font-weight:bold;">Available Servlets:</td>        
-      </tr>
-        <tr><td><a href="wettersearch">WetterSearch</a></td></tr>
-        <tr><td><a href="Search.jsp">Google Search</a></td></tr>
-        <tr><td><a href="TwitterSearch.jsp">Twitter Search</a></td></tr>
-    </table>
+
+	<div class="wrapper2">
+		
+		<!-- header section -->
+		<div id="masthead">
+			<h1 align="center">Welcome to Wetter Search!</h1>
+		</div>
+		
+		<!-- Content section -->
+		<div class="content">
+		
+			<!-- Content header -->
+			<div align="center">
+			</div>
+			
+			<div align="center" style="width: 820px; padding-left: 205px; position: relative;">
+			
+				<!-- page content -->
+				<p style="font-family: serif; font: caption; font-size: large;">Wetter Search is a search engine built in Java using the Google App Engine SDK API. 
+				It combines the searching capabilities of Twitter and Google and displays them on one screen. 
+				The results from google are filtered according to the sites that are mentioned in the tweets 
+				from searching the query term.</p>
+				
+				<form action="/Search.jsp">
+				<input style="font-family: serif; font: caption; font-size: large;" type="submit" value="Search"/>
+				</form>
+			</div>				
+			
+			<div style='clear:both;'></div>
+			
+		</div>
+		
+		<!-- footer section -->
+		<div class="footer">
+		<p>©2012 Julian Johansson-Walder </p>
+		</div>	
+					
+	</div> <!-- end wrapper -->  
   </body>
 </html>

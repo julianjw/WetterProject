@@ -19,12 +19,17 @@
 		<div id="masthead">
 			<h1 align="center">Wetter Search</h1>
 			<div align="center">
-				<form id="cref_iframe" action="/WetterSearch">
-	  				<input type="hidden" name="cref" value="http://wetter-search.appspot.com/cref_cse.xml" />
-		  			<input type="hidden" name="cof" value="FORID:9" />
-	  				<input type="text" name="q" id="googleQuery" size="40" />
-	  				<input type="submit" name="sa" onclick="myFunction()" value="Search" />
-				</form>
+<!-- Google CSE Search Box Begins  -->
+<!-- Use of this code assumes agreement with the Google Custom Search Terms of Service. -->
+<!-- The terms of service are available at http://www.google.com/cse/docs/tos.html -->
+<form id="cref_iframe" action="/WetterSearch">
+  <input type="hidden" name="cref" value="http://www.guha.com/cref_cse.xml" />
+  <input type="hidden" name="cof" value="FORID:9" />
+  <input type="text" name="q" size="40" value="${query}"/>
+  <input type="submit" name="sa" value="Search" />
+</form>
+<script type="text/javascript" src="http://www.google.com/cse/brand?form=cref_iframe"></script>
+<!-- Google CSE Search Box Ends -->
 	
 				<form id="submitQuery" action="/WetterSearch">
 					<input type="text" name="q" id="twitterQuery" size="40" style="visibility: hidden;"/>
@@ -50,7 +55,7 @@
 <script>
 function myFunction()
 {
-document.getElementById("twitter").innerHTML="Hello World";
+document.getElementById("twitter").innerHTML="Getting Results...";
 
 var f = document.getElementById('cref_iframe');
 
@@ -73,7 +78,6 @@ document.getElementById("submitQuery").submit();
 
 
 <!-- Google CSE Search Box Ends -->
-<script type="text/javascript" src="http://wetter-search.appspot.com/brand?form=cref_iframe"></script>
 
 <div id="cse-search-results"></div>
 <script type="text/javascript">
@@ -113,7 +117,7 @@ function submitForm()
 </SCRIPT>
 
 </div>
-<div id="twitter" align="right" style="width: 600px; float: right;">
+<div id="twitter" align="right" style="width: 600px; float: right; min-height: 900px">
 	${twitterFeed}
 </div>
 </div>
@@ -125,7 +129,8 @@ function submitForm()
 		</div>
 		
 		<!-- footer section -->
-		<div class="footer"></div>	
+		<div class="footer">
+		</div>	
 					
 	</div> <!-- end wrapper -->  
 

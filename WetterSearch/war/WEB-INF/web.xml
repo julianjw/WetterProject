@@ -3,17 +3,9 @@
 		<servlet-name>WetterSearch</servlet-name>
 		<servlet-class>com.wetterproject.wettersearch.WetterSearchServlet</servlet-class>
 	</servlet>
-	 <servlet>
- 	<servlet-name>TwitterSearch</servlet-name>
- 	<servlet-class>com.wetterproject.wettersearch.TwitterSearchServlet</servlet-class>
- 	</servlet>
 	<servlet-mapping>
 		<servlet-name>WetterSearch</servlet-name>
 		<url-pattern>/WetterSearch</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>TwitterSearch</servlet-name>
-		<url-pattern>/TwitterSearch</url-pattern>
 	</servlet-mapping>
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>

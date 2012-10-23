@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<GoogleCustomizations>
+<Annotations>
+<!-- annotate pages under en.wikipedia.org/wiki/ which have the term 'Solar' in the url with the label solar_example -->
+<Annotation about="http://twitter.com/*">
+<Label name="solar_example"/>
+</Annotation>
+<!-- Create an annotation file by extracting the links from the top 100 results of a solar related query to Google. Yeah, kind of recursive ... (remember to escape the url!) -->
+<Annotation about="http://www.google.com/cse/tools/makecse?url=http%3A//www.google.com/search%3Fhl%3Den%26q%3Dtwitter%253A.com%26btnG%3DSearch%26num%3D100">
+<Label name="solar_example"/>
+</Annotation>
+</Annotations>
+</GoogleCustomizations>

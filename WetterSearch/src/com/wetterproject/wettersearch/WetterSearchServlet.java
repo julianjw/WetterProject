@@ -4,7 +4,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.Reader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -41,9 +44,11 @@ public class WetterSearchServlet extends HttpServlet {
 		
 		//Create url from the query given
 		String jsonFile = "http://search.twitter.com/search.json?q=" + query + "%20filter:links" + "&lang=en&iso_language_code=en&include_entities=true&result_type=mixed";
-	    
+	    System.out.println(jsonFile);
+		
 		//Read the json from the url and store it into a json object
 		JSONObject json = new JSONObject();
+		
 		
 		try {
 			json = readJsonFromUrl(jsonFile);
@@ -51,6 +56,8 @@ public class WetterSearchServlet extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		System.out.println(json.toString());
 		
 		ArrayList<TwitterResults> results = new ArrayList<TwitterResults>();
 		
@@ -75,7 +82,7 @@ public class WetterSearchServlet extends HttpServlet {
 			    JSONArray jaEntityUrls = jsonSectionEntity.getJSONArray("urls");
 			    try {
 			    	JSONObject jsonSectionEntityUrls = jaEntityUrls.getJSONObject(0);
-			    	newResult.setUrl(jsonSectionEntityUrls.getString("url"));
+			    	newResult.setUrl(jsonSectionEntityUrls.getString("expanded_url"));
 			    } catch (Exception e) {}
 			    
 			    newResult.setResult_type(jsonSectionMetadata.getString("result_type"));
@@ -102,7 +109,21 @@ public class WetterSearchServlet extends HttpServlet {
 	
 		String resultsHTML = convertResultsToHTML(results);
 		
+		if (resultsHTML == "") {
+			resultsHTML = "No results to display.";
+		}
+		
 		req.setAttribute("twitterFeed", resultsHTML);
+		
+//		//Create new cref_anno.xml
+		try {
+			CreateAnnotationFile(CreateAnnotations(results));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		req.setAttribute("query", req.getParameter("q"));
 		
 		//response.sendRedirect("/SearchResults.jsp"); redirect to another page
 		
@@ -141,16 +162,70 @@ public class WetterSearchServlet extends HttpServlet {
 		
 			
 			htmlText +="<TR>"
-					 	+ "<TD>" + "<img src=" + '"' + results.get(k).getProfile_image_url() + '"' + ">"
-					 	+ results.get(k).GetUserName() + "</TD>"
+					 	+ "<TD>" + "<img src=" + '"' + results.get(k).getProfile_image_url() + '"' + " >" + "</TD>"
+					 	+ "<TD>" + results.get(k).GetUserName() + "</TD>"
 					 	+ "<TD>" + results.get(k).GetLinkedText() + "</TD>"
 					 	+ "<TD>" + results.get(k).GetCreatedAt() + "</TD>"
 					 	+ "</TR>";
-			}
-			htmlText += "</table>";
+		}
 		
+		htmlText += "</table>";
+		
+		if (results.size() == 0) {
+			htmlText = "";
+		}
 		
 		return htmlText;
 	}
 	
+	public String CreateAnnotations(ArrayList<TwitterResults> results) {
+		
+		String xmlAnnotations = "";
+		
+		xmlAnnotations = "<Batch><Add>";
+		
+		xmlAnnotations += "<Annotations>";
+		
+		for (int k = 0; k < results.size(); k++) {
+			
+			xmlAnnotations += "<Annotation about=" + '"' + results.get(k).getUrl() + '"' + ">"
+						   + "<Label name=" + '"' + "_cse_twitter_result" + '"' + "/>"
+						   + "</Annotation>";
+		}
+		
+		xmlAnnotations += "</Annotations></Add></Batch>";
+		
+		System.out.println(xmlAnnotations);
+		
+		return xmlAnnotations;
+	}
+	
+	public void CreateAnnotationFile(String xmlAnnotations) throws Exception {
+
+        try {
+            URL url = new URL("http://wetter-search.appspot.com/cref_anno.xml");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            //System.out.println(connection.getContentType());
+            connection.setDoOutput(true);
+            connection.setRequestMethod("POST");
+
+            OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
+            //System.out.println(connection.getContent().toString());
+            
+            writer.write(xmlAnnotations);
+            writer.flush();
+            writer.close();
+    
+            if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                // OK
+            	System.out.println("Connection works");
+            } else {
+                // Server returned HTTP error code.
+            }
+        } catch (MalformedURLException e) {
+            // ...
+        } catch (IOException e) {
+            // ...
+        }
+	}
 }
